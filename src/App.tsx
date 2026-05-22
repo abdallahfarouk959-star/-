@@ -9,6 +9,7 @@ import { Navbar, Footer } from './components/Layout';
 import { Home } from './components/Home';
 import { Catalog } from './components/Catalog';
 import { About } from './components/About';
+import { BtcBullion } from './components/BtcBullion'; // 1. استيراد صفحة السبائك الجديدة هنا
 import { Category } from './types';
 
 function ScrollToTop() {
@@ -31,6 +32,8 @@ export default function App() {
             <Route path="/gold" element={<Catalog category={Category.Gold} />} />
             <Route path="/silver" element={<Catalog category={Category.Silver} />} />
             <Route path="/about" element={<About />} />
+            {/* 2. إضافة مسار صفحة السبائك والجنيهات الذهب هنا */}
+            <Route path="/btc-bullion" element={<BtcBullion />} />
           </Routes>
         </main>
         <Footer />
