@@ -21,23 +21,43 @@ export function Home() {
   return (
     <div className="flex flex-col bg-[#0A0A0A] text-[#F5F2ED] overflow-hidden relative">
       
-      {/* 1. شريط الأسعار الحيّة أعلى الصفحة - تم إصلاحه ليظهر في الموبايل كشريط سحب أفقي مرن */}
-      <div className="absolute top-24 left-0 right-0 z-40 bg-[#121212]/90 backdrop-blur-md border-b border-[#C8A155]/20 py-2.5 px-6 overflow-x-auto whitespace-nowrap scrollbar-none">
-        <div className="max-w-7xl mx-auto flex sm:justify-center items-center gap-8 sm:gap-12 text-xs font-medium text-[#F5F2ED]/90 min-w-max">
-          <span className="text-[#C8A155] font-bold flex items-center gap-1 sticky right-0 bg-[#121212]/90 pl-2">
+      {/* 1. شريط الأسعار الحيّة أعلى الصفحة - يتحرك تلقائياً بحركة انسيابية لانهائية */}
+      <div className="absolute top-24 left-0 right-0 z-40 bg-[#121212]/90 backdrop-blur-md border-b border-[#C8A155]/20 py-2.5 overflow-hidden select-none">
+        {/* الحاوية المتحركة بـ Framer Motion لضمان حركة ناعمة جداً */}
+        <motion.div 
+          initial={{ x: '100%' }}
+          animate={{ x: '-100%' }}
+          transition={{
+            repeat: Infinity,
+            repeatType: 'loop',
+            duration: 25, // سرعة الحركة (كل ما زاد الرقم كل ما بقت أهدى وأفخم)
+            ease: 'linear'
+          }}
+          className="flex items-center gap-12 text-xs font-medium text-[#F5F2ED]/90 whitespace-nowrap will-change-transform"
+        >
+          <span className="text-[#C8A155] font-bold flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-[#C8A155] animate-pulse"></span>
-            مؤشر الصاغة اليوم:
+            مؤشر الصاغة اليوم في مصر
           </span>
           <div>عيار 24: <span className="font-serif font-bold text-[#C8A155]">{DAILY_GOLD_PRICES.gold24.toLocaleString()}</span> ج.م</div>
           <div>عيار 21: <span className="font-serif font-bold text-[#C8A155]">{DAILY_GOLD_PRICES.gold21.toLocaleString()}</span> ج.م</div>
           <div>عيار 18: <span className="font-serif font-bold text-[#C8A155]">{DAILY_GOLD_PRICES.gold18.toLocaleString()}</span> ج.م</div>
           <div>فضة 925: <span className="font-serif font-bold text-[#C8A155]">{DAILY_GOLD_PRICES.silver925.toLocaleString()}</span> ج.م</div>
-        </div>
+          
+          {/* تكرار البيانات داخل نفس الشريط لمنع حدوث فراغ أثناء الدوران اللانهائي */}
+          <span className="text-[#C8A155] font-bold flex items-center gap-1.5 ml-12">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#C8A155] animate-pulse"></span>
+            أسعار التداول الحية
+          </span>
+          <div>عيار 24: <span className="font-serif font-bold text-[#C8A155]">{DAILY_GOLD_PRICES.gold24.toLocaleString()}</span> ج.م</div>
+          <div>عيار 21: <span className="font-serif font-bold text-[#C8A155]">{DAILY_GOLD_PRICES.gold21.toLocaleString()}</span> ج.م</div>
+          <div>عيار 18: <span className="font-serif font-bold text-[#C8A155]">{DAILY_GOLD_PRICES.gold18.toLocaleString()}</span> ج.م</div>
+          <div>فضة 925: <span className="font-serif font-bold text-[#C8A155]">{DAILY_GOLD_PRICES.silver925.toLocaleString()}</span> ج.م</div>
+        </motion.div>
       </div>
 
       {/* 2. قسم الـ Hero الأسود الفخم الممتد بكامل الشاشة */}
       <section className="relative min-h-screen flex items-center justify-center pt-32 px-6 bg-gradient-to-b from-[#0A0A0A] via-[#121212] to-[#0A0A0A]">
-        {/* خلفية هندسية ذهبية خفيفة وناعمة جداً */}
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none z-0">
           <div className="absolute inset-0 bg-[radial-gradient(#C8A155_1px,transparent_1px)] [background-size:32px_32px]"></div>
         </div>
@@ -53,7 +73,6 @@ export function Home() {
             تأسست عام 1938 • عراقة تتوارثها الأجيال
           </motion.div>
 
-          {/* الجملة الفخمة والوصف التراثي الراقي */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -155,7 +174,7 @@ export function Home() {
 
       <WarrantyModal 
         isOpen={isWarrantyOpen} 
-        onClose={() => setIsWarrantyOpen(false)} 
+        = {() => setIsWarrantyOpen(false)} 
       />
     </div>
   );
