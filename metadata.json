@@ -1,0 +1,8 @@
+{
+  "name": "مجوهرات العبد القادر",
+  "description": "موقع عرض المشغولات الذهبية والفضية الراقية - دقة، أصالة، وفخامة.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
