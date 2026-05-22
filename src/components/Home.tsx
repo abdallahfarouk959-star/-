@@ -23,14 +23,13 @@ export function Home() {
       
       {/* 1. شريط الأسعار الحيّة أعلى الصفحة - يتحرك تلقائياً بحركة انسيابية لانهائية */}
       <div className="absolute top-24 left-0 right-0 z-40 bg-[#121212]/90 backdrop-blur-md border-b border-[#C8A155]/20 py-2.5 overflow-hidden select-none">
-        {/* الحاوية المتحركة بـ Framer Motion لضمان حركة ناعمة جداً */}
         <motion.div 
           initial={{ x: '100%' }}
           animate={{ x: '-100%' }}
           transition={{
             repeat: Infinity,
             repeatType: 'loop',
-            duration: 25, // سرعة الحركة (كل ما زاد الرقم كل ما بقت أهدى وأفخم)
+            duration: 25, // سرعة التمرير التلقائي
             ease: 'linear'
           }}
           className="flex items-center gap-12 text-xs font-medium text-[#F5F2ED]/90 whitespace-nowrap will-change-transform"
@@ -44,7 +43,7 @@ export function Home() {
           <div>عيار 18: <span className="font-serif font-bold text-[#C8A155]">{DAILY_GOLD_PRICES.gold18.toLocaleString()}</span> ج.م</div>
           <div>فضة 925: <span className="font-serif font-bold text-[#C8A155]">{DAILY_GOLD_PRICES.silver925.toLocaleString()}</span> ج.م</div>
           
-          {/* تكرار البيانات داخل نفس الشريط لمنع حدوث فراغ أثناء الدوران اللانهائي */}
+          {/* تكرار المحتوى لمنع الفراغات أثناء الدوران */}
           <span className="text-[#C8A155] font-bold flex items-center gap-1.5 ml-12">
             <span className="w-1.5 h-1.5 rounded-full bg-[#C8A155] animate-pulse"></span>
             أسعار التداول الحية
@@ -174,7 +173,7 @@ export function Home() {
 
       <WarrantyModal 
         isOpen={isWarrantyOpen} 
-        = {() => setIsWarrantyOpen(false)} 
+        onClose={() => setIsWarrantyOpen(false)} 
       />
     </div>
   );
