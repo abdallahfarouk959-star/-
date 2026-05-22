@@ -21,12 +21,12 @@ export function Home() {
   return (
     <div className="flex flex-col bg-[#0A0A0A] text-[#F5F2ED] overflow-hidden relative">
       
-      {/* 1. شريط الأسعار الحيّة أعلى الصفحة - ثابت في مكانه (absolute) ولا ينزل مع الـ Scroll */}
-      <div className="absolute top-24 left-0 right-0 z-40 bg-[#121212]/90 backdrop-blur-md border-b border-[#C8A155]/20 py-2.5 px-6 hidden sm:block">
-        <div className="max-w-7xl mx-auto flex justify-center items-center gap-12 text-xs font-medium text-[#F5F2ED]/90">
-          <span className="text-[#C8A155] font-bold flex items-center gap-1">
+      {/* 1. شريط الأسعار الحيّة أعلى الصفحة - تم إصلاحه ليظهر في الموبايل كشريط سحب أفقي مرن */}
+      <div className="absolute top-24 left-0 right-0 z-40 bg-[#121212]/90 backdrop-blur-md border-b border-[#C8A155]/20 py-2.5 px-6 overflow-x-auto whitespace-nowrap scrollbar-none">
+        <div className="max-w-7xl mx-auto flex sm:justify-center items-center gap-8 sm:gap-12 text-xs font-medium text-[#F5F2ED]/90 min-w-max">
+          <span className="text-[#C8A155] font-bold flex items-center gap-1 sticky right-0 bg-[#121212]/90 pl-2">
             <span className="w-1.5 h-1.5 rounded-full bg-[#C8A155] animate-pulse"></span>
-            مؤشر الصاغة اليوم في مصر:
+            مؤشر الصاغة اليوم:
           </span>
           <div>عيار 24: <span className="font-serif font-bold text-[#C8A155]">{DAILY_GOLD_PRICES.gold24.toLocaleString()}</span> ج.م</div>
           <div>عيار 21: <span className="font-serif font-bold text-[#C8A155]">{DAILY_GOLD_PRICES.gold21.toLocaleString()}</span> ج.م</div>
@@ -53,16 +53,15 @@ export function Home() {
             تأسست عام 1938 • عراقة تتوارثها الأجيال
           </motion.div>
 
+          {/* الجملة الفخمة والوصف التراثي الراقي */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-4xl md:text-7xl font-serif font-bold leading-tight md:leading-snug text-[#F5F2ED] max-w-4xl mx-auto"
           >
-           روائع صاغتنا الفريدة
-           <br />
-            تعود إليكم من جديد
-            <br />
+            روائع صاغتنا الفريدة <br />
+            <span className="bg-gradient-to-r from-[#C8A155] via-[#F3E5AB] to-[#A68546] bg-clip-text text-transparent font-normal italic">تعود إليكم من جديد</span>
           </motion.h1>
 
           <motion.p
@@ -71,7 +70,7 @@ export function Home() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-base md:text-xl text-[#F5F2ED]/60 font-light max-w-2xl mx-auto leading-relaxed"
           >
-             نرحب بكم في فرعنا بميدان المحطة داخل مول الذهب لعيش تجربة تسوق ملكية فاخرة.
+            تألقي بأفخم الأطقم والمشغولات الملكية المصاغة بدقة متناهية لتناسب ذوقك الرفيع. متوفر الآن قطع محدودة جداً بفرع آل عبد القادر بميدان المحطة (مول الذهب) بأسوان لعيش تجربة تسوق ملكية فاخرة.
           </motion.p>
 
           <motion.div
@@ -105,7 +104,7 @@ export function Home() {
         </div>
       </section>
 
-      {/* 3. شريط الضمان الموثق الحاصل على ختم مصلحة الدمغة */}
+      {/* 3. شريط الضمان الموثق */}
       <section className="py-12 bg-[#121212] border-y border-[#C8A155]/10 px-6">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center text-right">
           <div className="flex items-start gap-4">
@@ -130,7 +129,7 @@ export function Home() {
         </div>
       </section>
 
-      {/* 4. قسم عرض الكتالوج الأكثر عشقاً وطلباً بناءً على تفاعل زبائن فيسبوك بأسوان */}
+      {/* 4. قسم عرض الكتالوج الأكثر عشقاً وطلباً */}
       <section className="py-24 px-6 bg-[#0A0A0A] relative">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-end justify-between mb-16 gap-6 text-right">
