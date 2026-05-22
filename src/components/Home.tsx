@@ -5,7 +5,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { ShieldCheck, ArrowDown, Sparkles } from 'lucide-react';
+import { ShieldCheck, ArrowDown, Sparkles, TrendingUp, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Category } from '../types';
 import { DAILY_GOLD_PRICES, MOCK_PRODUCTS } from '../constants';
@@ -15,13 +15,13 @@ import { WarrantyModal } from './WarrantyModal';
 export function Home() {
   const [isWarrantyOpen, setIsWarrantyOpen] = useState(false);
   
-  // تصفية المنتجات ليعرض أول 3 قطع ذهب في الواجهة
+  // text تصفية المنتجات ليعرض أول 3 قطع ذهب في الواجهة
   const featuredGold = MOCK_PRODUCTS.filter(p => (p as any).category === Category.Gold || p.category === 'gold' as any).slice(0, 3);
 
   return (
     <div className="flex flex-col bg-[#0A0A0A] text-[#F5F2ED] overflow-hidden relative">
       
-      {/* 1. شريط الأسعار الحيّة أعلى الصفحة - يتحرك تلقائياً بحركة انسيابية لانهائية */}
+      {/* 1. شريط الأسعار الحيّة اللانهائي أعلى الصفحة */}
       <div className="absolute top-24 left-0 right-0 z-40 bg-[#121212]/90 backdrop-blur-md border-b border-[#C8A155]/20 py-2.5 overflow-hidden select-none">
         <motion.div 
           initial={{ x: '100%' }}
@@ -29,7 +29,7 @@ export function Home() {
           transition={{
             repeat: Infinity,
             repeatType: 'loop',
-            duration: 25, // سرعة التمرير التلقائي
+            duration: 25,
             ease: 'linear'
           }}
           className="flex items-center gap-12 text-xs font-medium text-[#F5F2ED]/90 whitespace-nowrap will-change-transform"
@@ -43,7 +43,6 @@ export function Home() {
           <div>عيار 18: <span className="font-serif font-bold text-[#C8A155]">{DAILY_GOLD_PRICES.gold18.toLocaleString()}</span> ج.م</div>
           <div>فضة 925: <span className="font-serif font-bold text-[#C8A155]">{DAILY_GOLD_PRICES.silver925.toLocaleString()}</span> ج.م</div>
           
-          {/* تكرار المحتوى لمنع الفراغات أثناء الدوران */}
           <span className="text-[#C8A155] font-bold flex items-center gap-1.5 ml-12">
             <span className="w-1.5 h-1.5 rounded-full bg-[#C8A155] animate-pulse"></span>
             أسعار التداول الحية
@@ -56,10 +55,17 @@ export function Home() {
       </div>
 
       {/* 2. قسم الـ Hero الأسود الفخم الممتد بكامل الشاشة */}
-      <section className="relative min-h-screen flex items-center justify-center pt-32 px-6 bg-gradient-to-b from-[#0A0A0A] via-[#121212] to-[#0A0A0A]">
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none z-0">
-          <div className="absolute inset-0 bg-[radial-gradient(#C8A155_1px,transparent_1px)] [background-size:32px_32px]"></div>
-        </div>
+      <section className="relative min-h-screen flex items-center justify-center pt-32 px-6 bg-[#0A0A0A] overflow-hidden">
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.08, 1],
+            opacity: [0.04, 0.07, 0.04] 
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute inset-0 z-0 pointer-events-none bg-cover bg-center will-change-transform"
+          style={{ backgroundImage: "url('https://plus.unsplash.com/premium_photo-1661645473770-90d750452fa0?w=1200&auto=format&fit=crop&q=80')" }}
+        />
+        <div className="absolute inset-0 opacity-[0.02] pointer-events-none z-0 bg-[radial-gradient(#C8A155_1px,transparent_1px)] [background-size:32px_32px]"></div>
 
         <div className="max-w-5xl mx-auto text-center relative z-10 space-y-8">
           <motion.div
@@ -99,15 +105,15 @@ export function Home() {
           >
             <Link
               to="/gold"
-              className="px-10 py-4 bg-[#C8A155] text-[#0A0A0A] font-bold text-xs uppercase tracking-widest hover:bg-[#A68546] hover:text-white transition-all rounded-full shadow-lg hover:shadow-[#C8A155]/10 hover:-translate-y-0.5"
+              className="px-10 py-4 bg-[#C8A155] text-[#0A0A0A] font-bold text-xs uppercase tracking-widest hover:bg-[#A68546] hover:text-white transition-all rounded-full shadow-lg"
             >
               تصفح الغوايش الملكية
             </Link>
             <Link
-              to="/about"
-              className="px-10 py-4 bg-transparent border border-[#C8A155]/40 text-[#F5F2ED] font-bold text-xs uppercase tracking-widest hover:bg-white/5 transition-all rounded-full"
+              to="/btc-bullion"
+              className="px-10 py-4 bg-transparent border border-[#C8A155] text-[#C8A155] font-bold text-xs uppercase tracking-widest hover:bg-[#C8A155] hover:text-[#0A0A0A] transition-all rounded-full shadow-sm"
             >
-              موقعنا في مول الذهب
+              قسم سبائك BTC للاستثمار
             </Link>
           </motion.div>
 
@@ -122,27 +128,23 @@ export function Home() {
         </div>
       </section>
 
-      {/* 3. شريط الضمان الموثق */}
-      <section className="py-12 bg-[#121212] border-y border-[#C8A155]/10 px-6">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center text-right">
-          <div className="flex items-start gap-4">
-            <div className="p-3 bg-[#C8A155]/10 border border-[#C8A155]/30 rounded-sm text-[#C8A155] shrink-0">
-              <ShieldCheck size={24} />
+      {/* [جديد] 3. قسم كروت التعريف بسبائك BTC التفاعلية لادخار واستثمار آمن */}
+      <section className="py-20 bg-[#121212] border-y border-[#C8A155]/10 px-6">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center text-right">
+          <div className="lg:col-span-8 space-y-4">
+            <div className="flex items-center gap-2 text-[#C8A155] text-xs font-bold tracking-wider uppercase">
+              <TrendingUp size={16} />
+              حلول الادخار الذكي والمضمون
             </div>
-            <div>
-              <h3 className="font-bold text-base text-[#F5F2ED] mb-1">ضمان الأصالة والموثوقية مصلحة الدمغة</h3>
-              <p className="text-xs text-[#F5F2ED]/60 leading-relaxed font-light">
-                جميع مشغولات آل عبد القادر مختومة وموثقة رسمياً لضمان العيار والوزن ونقاء المعدن من مصلحة الموازين المصرية.
-              </p>
-            </div>
+            <h2 className="text-2xl md:text-4xl font-serif font-bold text-white">الوكيل المعتمد لسبائك وجنيهات BTC بأسوان</h2>
+            <p className="text-xs md:text-sm text-[#F5F2ED]/70 font-light leading-relaxed max-w-3xl">
+              احمِ مدخراتك واستثمر بذكاء مع تشكيلة سبائك BTC الذهبية المصاغة من الذهب الخالص عيار 24 بنقاء 999.9، المتوفرة بجميع الأوزان من 1 جرام وحتى 100 جرام، بالإضافة إلى الجنيهات الذهب التراثية بأسعار محدثة لحظياً وبأقل مصنعية وكاش باك مميز عند إعادة البيع.
+            </p>
           </div>
-          <div className="flex justify-start md:justify-end border-t md:border-t-0 md:border-r border-[#C8A155]/10 pt-4 md:pt-0 md:pr-8">
-            <button
-              onClick={() => setIsWarrantyOpen(true)}
-              className="px-6 py-3 bg-transparent border border-[#C8A155]/40 text-[#C8A155] text-xs font-bold tracking-wider rounded-sm hover:bg-[#C8A155] hover:text-[#0A0A0A] transition-all outline-none"
-            >
-              طالع وثيقة الضمان الملكية للشركة
-            </button>
+          <div className="lg:col-span-4 flex justify-start lg:justify-end gap-4">
+            <Link to="/btc-bullion" className="w-full lg:w-auto px-8 py-4 bg-transparent border-2 border-[#C8A155] text-[#C8A155] text-xs font-bold uppercase tracking-wider rounded-sm text-center hover:bg-[#C8A155] hover:text-[#0A0A0A] transition-all">
+              عرض أسعار السبائك اليوم
+            </Link>
           </div>
         </div>
       </section>
@@ -162,7 +164,6 @@ export function Home() {
             </Link>
           </div>
 
-          {/* عرض كروت المنتجات */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             {featuredGold.map(product => (
               <ProductCard key={product.id} product={product} dailyPrice={DAILY_GOLD_PRICES} />
@@ -171,10 +172,7 @@ export function Home() {
         </div>
       </section>
 
-      <WarrantyModal 
-        isOpen={isWarrantyOpen} 
-        onClose={() => setIsWarrantyOpen(false)} 
-      />
+      <WarrantyModal isOpen={isWarrantyOpen} onClose={() => setIsWarrantyOpen(false)} />
     </div>
   );
 }
