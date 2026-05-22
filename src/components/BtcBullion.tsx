@@ -4,24 +4,24 @@
  */
 
 import React, { useState } from 'react';
-import { motion } from 'motion/react';
-import { ShieldCheck, ArrowRight, Award, Coins, TrendingUp } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { ShieldCheck, ArrowRight, TrendingUp, Layers, Coins } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { DAILY_GOLD_PRICES } from '../constants';
 
 export function BtcBullion() {
   const [selectedWeight, setSelectedWeight] = useState<string | null>(null);
+  const [activeFilter, setActiveFilter] = useState<'all' | 'bullion' | 'coin'>('all');
 
-  // مصفوفة أوزان سبائك BTC الشهيرة مع حساب الأسعار تلقائياً بناءً على سعر عيار 24 الحالي
   const bullionItems = [
-    { id: 'b1', name: 'سبيكة BTC ذهب صافي 1 جرام', weight: 1, karat: '24', makingFee: 210 },
-    { id: 'b2', name: 'سبيكة BTC ذهب صافي 5 جرام', weight: 5, karat: '24', makingFee: 155 },
-    { id: 'b3', name: 'سبيكة BTC ذهب صافي 10 جرام', weight: 10, karat: '24', makingFee: 130 },
-    { id: 'b4', name: 'سبيكة BTC ذهب صافي 20 جرام', weight: 20, karat: '24', makingFee: 110 },
-    { id: 'b5', name: 'سبيكة BTC ذهب صافي 31.1 جرام (أونصة)', weight: 31.1, karat: '24', makingFee: 98 },
-    { id: 'b6', name: 'سبيكة BTC ذهب صافي 50 جرام', weight: 50, karat: '24', makingFee: 92 },
-    { id: 'b7', name: 'جنيه ذهب BTC إسلامي كلاسيك', weight: 8, karat: '21', makingFee: 125, isCoin: true },
-    { id: 'b8', name: 'نصف جنيه ذهب BTC فاخر', weight: 4, karat: '21', makingFee: 140, isCoin: true },
+    { id: 'b1', name: 'سبيكة BTC ذهب صافي 1 جرام', weight: 1, karat: '24', makingFee: 210, type: 'bullion' },
+    { id: 'b2', name: 'سبيكة BTC ذهب صافي 5 جرام', weight: 5, karat: '24', makingFee: 155, type: 'bullion' },
+    { id: 'b3', name: 'سبيكة BTC ذهب صافي 10 جرام', weight: 10, karat: '24', makingFee: 130, type: 'bullion' },
+    { id: 'b4', name: 'سبيكة BTC ذهب صافي 20 جرام', weight: 20, karat: '24', makingFee: 110, type: 'bullion' },
+    { id: 'b5', name: 'سبيكة BTC ذهب صافي 31.1 جرام (أونصة)', weight: 31.1, karat: '24', makingFee: 98, type: 'bullion' },
+    { id: 'b6', name: 'سبيكة BTC ذهب صافي 50 جرام', weight: 50, karat: '24', makingFee: 92, type: 'bullion' },
+    { id: 'b7', name: 'جنيه ذهب BTC إسلامي كلاسيك', weight: 8, karat: '21', makingFee: 125, type: 'coin' },
+    { id: 'b8', name: 'نصف جنيه ذهب BTC فاخر', weight: 4, karat: '21', makingFee: 140, type: 'coin' },
   ];
 
   const calculatePrice = (weight: number, karat: string, makingFee: number) => {
@@ -29,20 +29,24 @@ export function BtcBullion() {
     return weight * (gramPrice + makingFee);
   };
 
+  const filteredItems = bullionItems.filter(item => 
+    activeFilter === 'all' ? true : item.type === activeFilter
+  );
+
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-[#F5F2ED] pt-32 pb-24 px-6 text-right">
-      <div className="max-w-7xl mx-auto space-y-16">
+    <div className="min-h-screen bg-white text-black pt-32 pb-24 px-6 text-right">
+      <div className="max-w-7xl mx-auto space-y-12">
         
-        {/* العناوين والترحيب بقسم الاستثمار */}
-        <div className="flex flex-col md:flex-row items-start md:items-end justify-between border-b border-[#C8A155]/20 pb-8 gap-6">
+        {/* هيدر الصفحة الاستثمارية الموحد بالكامل */}
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between border-b-2 border-black pb-8 gap-6">
           <div className="space-y-3">
             <div className="inline-flex items-center gap-2 text-[#C8A155] text-xs font-bold uppercase tracking-widest">
-              <Award size={14} />
-              الكتالوج الرسمي للاستثمار والأوزان المعتمدة
+              <Layers size={14} />
+              منصة الادخار الذهبي المعتمدة بأسوان
             </div>
-            <h1 className="text-3xl md:text-5xl font-serif font-bold text-white">منصة سبائك وجنيهات BTC الملكية</h1>
-            <p className="text-sm text-[#F5F2ED]/60 font-light max-w-2xl">
-              تحديث مباشر للأسعار وفق مؤشر الصاغة اليوم في مصر. السبائك مغلفة ومختومة بالكامل، مع ميزة الكاش باك (إعادة جزء من المصنعية عند إعادة البيع).
+            <h1 className="text-3xl md:text-5xl font-serif font-bold text-black">سبائك وجنيهات BTC النقدية</h1>
+            <p className="text-sm text-black/60 font-light max-w-xl">
+              تصفح الأوزان الاستثمارية الفاخرة بأسعار الدمغة المحدثة لحظياً. احمِ قوتك الشرائية بسبائك معتمدة 100%.
             </p>
           </div>
           <Link to="/" className="inline-flex items-center gap-2 text-xs text-[#C8A155] font-bold hover:underline outline-none">
@@ -51,84 +55,104 @@ export function BtcBullion() {
           </Link>
         </div>
 
-        {/* عرض شبكة المنتجات للسبائك */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {bullionItems.map((item) => {
-            const price = calculatePrice(item.weight, item.karat, item.makingFee);
-            return (
-              <motion.div
-                key={item.id}
-                whileHover={{ y: -4 }}
-                className="bg-[#121212] border border-[#C8A155]/15 rounded-sm p-6 flex flex-col justify-between shadow-md relative group hover:border-[#C8A155]/40 transition-colors"
-              >
-                <div>
-                  <div className="flex justify-between items-center mb-4">
-                    <span className="bg-[#C8A155]/10 text-[#C8A155] text-[10px] font-bold px-3 py-1 rounded-full border border-[#C8A155]/20 font-mono">
-                      {item.isCoin ? 'جنيه ذهب عيار 21' : 'سبيكة عيار 24'}
-                    </span>
-                    {item.isCoin ? <Coins size={18} className="text-[#C8A155]" /> : <TrendingUp size={18} className="text-[#C8A155]" />}
-                  </div>
-
-                  <h3 className="text-base font-serif font-bold text-white line-clamp-2 min-h-[3rem] group-hover:text-[#C8A155] transition-colors">
-                    {item.name}
-                  </h3>
-                  
-                  <div className="mt-4 space-y-2 text-xs text-[#F5F2ED]/60 border-t border-[#C8A155]/10 pt-4 font-light">
-                    <div className="flex justify-between">
-                      <span>الوزن الصافي:</span>
-                      <span className="font-bold text-white font-serif">{item.weight} جرام</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>المصنعية والدمغة:</span>
-                      <span className="font-bold text-white font-serif">{item.makingFee} ج.م / جرام</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-8 pt-4 border-t border-[#C8A155]/10 flex flex-col gap-4">
-                  <div className="flex flex-col">
-                    <span className="text-[10px] text-[#F5F2ED]/40 uppercase font-bold">القيمة الشرائية اللحظية</span>
-                    <span className="text-2xl font-serif font-bold text-[#C8A155]">
-                      {Math.round(price).toLocaleString()} <span className="text-xs font-sans font-normal text-white/50">ج.م</span>
-                    </span>
-                  </div>
-                  <button 
-                    onClick={() => setSelectedWeight(item.name)}
-                    className="w-full py-3 bg-[#C8A155] hover:bg-[#A68546] text-[#0A0A0A] hover:text-white transition-all font-bold text-xs rounded-sm shadow-sm uppercase tracking-widest outline-none"
-                  >
-                    حجز وتثبيت السعر بالصاغة
-                  </button>
-                </div>
-              </motion.div>
-            );
-          })}
+        {/* أزرار التصفية السريعة والراقية */}
+        <div className="flex flex-wrap gap-3 border-b border-black/10 pb-4">
+          {['all', 'bullion', 'coin'].map((filter) => (
+            <button 
+              key={filter}
+              onClick={() => setActiveFilter(filter as any)}
+              className={`px-5 py-2 text-xs font-bold tracking-wider rounded-sm transition-all ${
+                activeFilter === filter ? 'bg-black text-white' : 'bg-gray-50 border border-black/20 text-black/70'
+              }`}
+            >
+              {filter === 'all' ? 'كل المعروضات المالية' : filter === 'bullion' ? 'السبائك (عيار 24)' : 'الجنيهات الذهب (عيار 21)'}
+            </button>
+          ))}
         </div>
 
-        {/* وثيقة وشارة الضمان المعتمدة لمصلحة الموازين */}
-        <div className="bg-[#121212] border border-[#C8A155]/20 p-8 rounded-sm max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-6">
-          <ShieldCheck size={48} className="text-[#C8A155] shrink-0" />
-          <div className="space-y-2 flex-1">
-            <h3 className="text-lg font-bold text-white">ميثاق الأمان والنزاهة الاستثمارية</h3>
-            <p className="text-xs text-[#F5F2ED]/70 leading-relaxed font-light">
-              جميع سبائك وجنيهات BTC المستلمة من خلال فروعنا بأسوان تكون مغلفة بغلاف المصنع الذكي المزود بالعلامة المائية والرقم التسلسلي لضمان النقاء الكلي، ومدموغة رسمياً بالكامل بمصلحة الموازين والدمغة المصرية. يمكنك إعادة بيعها بأي وقت والحصول على الكاش باك القانوني للمصنعية.
-            </p>
-          </div>
+        {/* كروت الأوزان المبتكرة بالخلفية البيضاء الفاخرة والإطار الأسود */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <AnimatePresence mode="popLayout">
+            {filteredItems.map((item) => {
+              const price = calculatePrice(item.weight, item.karat, item.makingFee);
+              return (
+                <motion.div
+                  layout
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.4 }}
+                  key={item.id}
+                  className="bg-white border-2 border-black p-6 flex flex-col justify-between hover:shadow-md transition-all rounded-sm relative overflow-hidden group"
+                >
+                  <div className="absolute -left-4 -bottom-6 text-7xl font-mono font-bold text-black/[0.02] pointer-events-none select-none">
+                    {item.weight}g
+                  </div>
+
+                  <div className="flex items-start justify-between gap-4 mb-6">
+                    <div className="space-y-1">
+                      <h3 className="text-lg font-bold text-black font-serif">{item.name}</h3>
+                      <p className="text-[11px] text-[#C8A155] font-mono tracking-widest font-bold">غلاف معتمد مصنع BTC</p>
+                    </div>
+                    <div className="w-14 h-14 bg-black border border-[#C8A155] rounded-sm flex flex-col items-center justify-center shrink-0 text-white">
+                      <span className="text-base font-serif font-bold text-[#C8A155]">{item.weight}</span>
+                      <span className="text-[9px] text-white/50 uppercase font-mono">جرام</span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2 text-xs border-y border-black/10 py-3 my-4 font-light text-black/70">
+                    <div className="flex justify-between">
+                      <span>العيار والنقاء المالي:</span>
+                      <span className="font-bold text-black font-mono">عيار {item.karat} ({item.karat === '24' ? '999.9' : '875'})</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>المصنعية والدمغة الرسمية:</span>
+                      <span className="font-bold text-black font-serif">{item.makingFee} ج.م / جرام</span>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 flex items-center justify-between gap-4">
+                    <div className="flex flex-col">
+                      <span className="text-[9px] text-black/40 uppercase font-bold">السعر الإجمالي اللحظي</span>
+                      <span className="text-xl font-serif font-bold text-black">
+                        {Math.round(price).toLocaleString()} <span className="text-xs font-sans font-normal opacity-60">ج.م</span>
+                      </span>
+                    </div>
+                    <button 
+                      onClick={() => setSelectedWeight(item.name)}
+                      className="px-5 py-3 bg-black hover:bg-black/90 text-white transition-all font-bold text-xs rounded-sm outline-none shrink-0"
+                    >
+                      تثبيت وحجز السعر
+                    </button>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
         </div>
 
-        {/* نافذة تأكيد نجاح الحجز التفاعلي البسيط */}
+        {/* وثيقة وشارة الضمان الفاتحة */}
+        <div className="bg-white border-2 border-black p-6 rounded-sm flex flex-col sm:flex-row items-center gap-6 max-w-3xl mx-auto">
+          <ShieldCheck size={36} className="text-[#C8A155] shrink-0" />
+          <p className="text-xs text-black/70 leading-relaxed font-light">
+            مؤسسة آل عبد القادر تضمن تثبيت السعر فور إتمام الحجز الهاتفي وحماية قيمة أموالكم الاستثمارية. جميع السبائك مدموغة ومختومة رسمياً بالكامل بمصلحة الموازين والدمغة المصرية.
+          </p>
+        </div>
+
+        {/* مودال حجز السبائك الفاتح */}
         {selectedWeight && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-            <div className="bg-[#121212] border border-[#C8A155] max-w-md w-full p-8 rounded-sm text-center space-y-6">
-              <div className="w-16 h-16 bg-[#C8A155]/10 text-[#C8A155] rounded-full flex items-center justify-center mx-auto">
-                <TrendingUp size={32} />
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+            <div className="bg-white border-2 border-black max-w-md w-full p-8 rounded-sm text-center space-y-6 text-black">
+              <div className="w-12 h-12 bg-black text-[#C8A155] rounded-full flex items-center justify-center mx-auto border border-[#C8A155]">
+                <TrendingUp size={24} />
               </div>
               <div className="space-y-2">
-                <h3 className="text-xl font-serif font-bold text-white">طلب تثبيت السعر قيد المعالجة</h3>
-                <p className="text-xs text-[#F5F2ED]/60 leading-relaxed">
-                  تم اختيار **{selectedWeight}**. سيقوم خبراء الصاغة بفرع آل عبد القادر بمول الذهب بأسوان بالتواصل معك هاتفياً فوراً لتثبيت السعر الحالي وتأكيد موعد الاستلام السريع بالصاغة لحماية مدخراتك.
+                <h3 className="text-xl font-serif font-bold text-black">تثبيت السعر الاستثماري</h3>
+                <p className="text-xs text-black/60 leading-relaxed">
+                  تم تحديد اختياركم لـ **{selectedWeight}**. سيقوم مستشارو الاستثمار بفرع مول الذهب بأسوان بالتواصل معكم لتثبيت القيمة النقدية وتأكيد موعد الاستلام الفوري لحماية مدخراتكم.
                 </p>
               </div>
-              <button onClick={() => setSelectedWeight(null)} className="px-6 py-2 bg-[#C8A155] text-[#0A0A0A] font-bold text-xs rounded-sm hover:bg-[#A68546] hover:text-white transition-all outline-none">
+              <button onClick={() => setSelectedWeight(null)} className="px-6 py-2 bg-black text-white font-bold text-xs rounded-sm hover:bg-black/90 transition-all outline-none">
                 العودة للوحة الاستثمار
               </button>
             </div>

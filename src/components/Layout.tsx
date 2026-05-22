@@ -51,7 +51,6 @@ export function Navbar() {
   );
 
   return (
-    // هنا قفلنا نظام الألوان لإجبار الفاتح على المتصفحات ومنع الموبايل من قلب الخلفية لأسود
     <nav
       style={{ colorScheme: 'light' }}
       className={cn(
@@ -111,7 +110,7 @@ export function Navbar() {
         </button>
       </div>
 
-      {/* شريط الأسعار الحيّة المطور للموبايل بستايل داكن معزول تماماً عن التغيير */}
+      {/* شريط الأسعار المتجاوب واللانهائي */}
       <div className="w-full bg-[#111111] border-t border-black py-2.5 overflow-hidden select-none shadow-sm flex" dir="rtl">
         <motion.div 
           initial={{ x: '0%' }}
@@ -131,7 +130,7 @@ export function Navbar() {
         </motion.div>
       </div>
 
-      {/* القائمة المنسدلة للموبايل الفاتحة */}
+      {/* القائمة المنسدلة للموبايل */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
