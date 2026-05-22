@@ -29,36 +29,37 @@ export function Navbar() {
     { name: 'عن المحل', path: '/about' },
   ];
 
-  // دالة لتوليد عناصر الشريط بالعربية
   const renderTickerContent = () => (
-    <>
+    <div className="flex items-center gap-8 md:gap-16 shrink-0 bg-[#111111]">
       <div className="flex items-center gap-2">
         <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-        <span>الذهب عيار ٢٤: {DAILY_GOLD_PRICES.gold24.toLocaleString()} ج.م</span>
+        <span className="whitespace-nowrap text-white">الذهب عيار ٢٤: {DAILY_GOLD_PRICES.gold24.toLocaleString()} ج.م</span>
       </div>
       <div className="flex items-center gap-2">
         <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-        <span>الذهب عيار ٢١: {DAILY_GOLD_PRICES.gold21.toLocaleString()} ج.م</span>
+        <span className="whitespace-nowrap text-white">الذهب عيار ٢١: {DAILY_GOLD_PRICES.gold21.toLocaleString()} ج.م</span>
       </div>
       <div className="flex items-center gap-2">
         <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-        <span>الذهب عيار ١٨: {DAILY_GOLD_PRICES.gold18.toLocaleString()} ج.م</span>
+        <span className="whitespace-nowrap text-white">الذهب عيار ١٨: {DAILY_GOLD_PRICES.gold18.toLocaleString()} ج.م</span>
       </div>
       <div className="flex items-center gap-2">
         <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-        <span>الفضة النقية ٩٢٥: {DAILY_GOLD_PRICES.silver925.toLocaleString()} ج.م</span>
+        <span className="whitespace-nowrap text-white">الفضة النقية ٩٢٥: {DAILY_GOLD_PRICES.silver925.toLocaleString()} ج.م</span>
       </div>
-    </>
+    </div>
   );
 
   return (
+    // هنا قفلنا نظام الألوان لإجبار الفاتح على المتصفحات ومنع الموبايل من قلب الخلفية لأسود
     <nav
+      style={{ colorScheme: 'light' }}
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b-2 border-black bg-white'
+        'fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b-2 border-black bg-white text-black'
       )}
     >
       {/* القسم العلوي: اللوجو والروابط */}
-      <div className="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between bg-white">
         {/* اللوجو الأسود الفخم */}
         <Link to="/" className="flex flex-col items-center group">
           <div className="mb-1 text-black">
@@ -103,14 +104,14 @@ export function Navbar() {
 
         {/* زرار الموبايل */}
         <button
-          className="md:hidden text-black outline-none"
+          className="md:hidden text-black outline-none bg-transparent"
           onClick={() => setIsOpen(!isOpen)}
         >
           {isOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
       </div>
 
-      {/* شريط الأسعار الحيّة باللغة العربية مع حركة انسيابية دائرية مستمرة بدون أي فراغات زمنية */}
+      {/* شريط الأسعار الحيّة المطور للموبايل بستايل داكن معزول تماماً عن التغيير */}
       <div className="w-full bg-[#111111] border-t border-black py-2.5 overflow-hidden select-none shadow-sm flex" dir="rtl">
         <motion.div 
           initial={{ x: '0%' }}
@@ -118,12 +119,11 @@ export function Navbar() {
           transition={{
             repeat: Infinity,
             repeatType: 'loop',
-            duration: 30,
+            duration: 20,
             ease: 'linear'
           }}
-          className="flex items-center gap-16 text-white/90 text-xs font-bold whitespace-nowrap pl-16 min-w-full"
+          className="flex items-center gap-8 md:gap-16 text-white text-[11px] md:text-xs font-bold w-max pl-8 md:pl-16 bg-[#111111]"
         >
-          {/* التكرار المتتالي 4 مرات يملأ الشاشة تماماً ويمنع حدوث أي تأخير أو فراغ عند نهاية الدورة */}
           {renderTickerContent()}
           {renderTickerContent()}
           {renderTickerContent()}
@@ -131,7 +131,7 @@ export function Navbar() {
         </motion.div>
       </div>
 
-      {/* القائمة المنسدلة للموبايل */}
+      {/* القائمة المنسدلة للموبايل الفاتحة */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -139,13 +139,14 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             className="absolute top-full left-0 right-0 bg-white border-t-2 border-black flex flex-col p-6 gap-4 md:hidden shadow-xl"
+            style={{ colorScheme: 'light' }}
           >
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
                 className={cn(
-                  "text-lg font-bold py-2 border-b border-black/5 text-right",
+                  "text-lg font-bold py-2 border-b border-black/5 text-right text-black",
                   location.pathname === link.path ? "text-[#C8A155]" : "text-black/80"
                 )}
                 onClick={() => setIsOpen(false)}
@@ -169,8 +170,8 @@ export function Navbar() {
 
 export function Footer() {
   return (
-    <footer className="bg-white border-t-2 border-black py-12 px-12 mt-auto text-right">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
+    <footer style={{ colorScheme: 'light' }} className="bg-white text-black border-t-2 border-black py-12 px-12 mt-auto text-right">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8 bg-white">
         <div className="flex flex-col items-center">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-black mb-2">
             <path d="M6 3h12l4 6-10 13L2 9Z" />
@@ -185,7 +186,7 @@ export function Footer() {
           </span>
         </div>
 
-        <div className="flex gap-8 md:gap-12 text-[11px] text-black/70 font-bold uppercase tracking-tight">
+        <div className="flex gap-8 md:gap-12 text-[11px] text-black font-bold uppercase tracking-tight">
           <Link to="/" className="hover:text-[#C8A155] transition-colors">الرئيسية</Link>
           <Link to="/gold" className="hover:text-[#C8A155] transition-colors">الذهب</Link>
           <Link to="/silver" className="hover:text-[#C8A155] transition-colors">الفضة</Link>
